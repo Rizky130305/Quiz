@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Persahabatan</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <h1>Quiz Persahabatan</h1>
+      </div>
+      <div class="quiz-box">
+        <div class="question-box">
+          <div class="question-number-box">
+            <span id="question-number">1</span>
+          </div>
+          <p id="question-text"></p>
+        </div>
+        <div class="answer-box" id="answer-options"></div>
+        <p id="correct-reason" style="display: none; color: green"></p>
+        <button id="next-btn" style="display: none">Next</button>
+      </div>
+      <div id="result" style="display: none"></div>
+    </div>
+
+    <script>
+      const questions = [
+        {
+          question: "Siapakah yang paling Guy di antara kami?",
+          options: ["Yosep", "Vicky", "Marsel", "Lasro", "Rizky"],
+          answer: "Vicky",
+          reason: "Karena bang Vicky kelamaan jomblo.",
+        },
+        {
+          question: "Siapakah yang paling Bucin?",
+          options: ["Yosep", "Vicky", "Marsel", "Lasro", "Rizky"],
+          answer: "Marsel",
+          reason:
+            "Karena bang Marsel sudah jarang kumpul sama kami dan lebih milih ceweknya.",
+        },
+        {
+          question: "Siapakah yang paling Sad?",
+          options: ["Yosep", "Vicky", "Marsel", "Lasro", "Rizky"],
+          answer: "Yosep",
+          reason: "Karena bang Yosep selalu memikirkan mantannya.",
+        },
+        {
+          question: "Siapakah yang paling Ganteng?",
+          options: ["Yosep", "Vicky", "Marsel", "Lasro", "Rizky"],
+          answer: "Lasro",
+          reason: "Karena bang Lasro terlalu sigma.",
+        },
+        {
+          question: "Siapakah yang paling Jomblo?",
+          options: ["Yosep", "Vicky", "Marsel", "Lasro", "Rizky"],
+          answer: "Rizky",
+          reason: "Karena bang Rizky mengikuti jejak bang Vicky.",
+        },
+      ];
+
+      let currentQuestionIndex = 0;
+      const questionText = document.getElementById("question-text");
+      const answerOptions = document.getElementById("answer-options");
+      const questionNumber = document.getElementById("question-number");
+      const nextBtn = document.getElementById("next-btn");
+      const correctReason = document.getElementById("correct-reason");
+      const resultBox = document.getElementById("result");
+
+      function showQuestion() {
+        const q = questions[currentQuestionIndex];
+        questionText.innerText = q.question;
+        questionNumber.innerText = currentQuestionIndex + 1;
+        answerOptions.innerHTML = "";
+        correctReason.style.display = "none";
+        nextBtn.style.display = "none";
+
+        q.options.forEach((option) => {
+          const btn = document.createElement("button");
+          btn.innerText = option;
+          btn.classList.add("option-btn");
+          btn.addEventListener("click", () =>
+            checkAnswer(btn, q.answer, q.reason)
+          );
+          answerOptions.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(selectedBtn, correctAnswer, reason) {
+        if (selectedBtn.innerText === correctAnswer) {
+          selectedBtn.classList.add("correct");
+          const reasonElement = document.createElement("p");
+          reasonElement.innerText = reason;
+          reasonElement.style.color = "green";
+          selectedBtn.parentElement.appendChild(reasonElement);
+          nextBtn.style.display = "block";
+        } else {
+          selectedBtn.classList.add("wrong");
+        }
+      }
+
+      nextBtn.addEventListener("click", () => {
+        if (currentQuestionIndex < questions.length - 1) {
+          currentQuestionIndex++;
+          showQuestion();
+        } else {
+          endQuiz();
+        }
+      });
+
+      function endQuiz() {
+        document.querySelector(".quiz-box").style.display = "none";
+        resultBox.style.display = "block";
+        resultBox.innerHTML = `<h2>Quiz Selesai!</h2>
+                <p>🎉 Selamat telah menyelesaikan kuis ini! 🎉</p>
+                <p>Persahabatan bukan hanya tentang seberapa lama kita bersama, tetapi tentang seberapa dalam kita saling memahami. Semoga kita berlima selalu mendukung satu sama lain, tidak peduli ke mana hidup membawa kita.</p>
+                <p><strong>SEMOGA KITA BERLIMA WISUDA BARENG DAN PERSAHABATAN GAK TERPUTUS! 🔥💪</strong></p>`;
+      }
+
+      showQuestion();
+    </script>
+  </body>
+</html>
